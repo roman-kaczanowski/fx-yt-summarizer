@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YT → Gemini</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">YT → Gemini</div>
+      <p class="tagline">Summarize the current YouTube video</p>
+    </header>
+
+    <section class="row" aria-label="Summary language">
+      <span class="label">Summary language</span>
+      <div class="switch" role="group" aria-label="Language">
+        <button type="button" id="lang-en" class="lang-btn" data-lang="en" aria-pressed="true">
+          EN
+        </button>
+        <button type="button" id="lang-ru" class="lang-btn" data-lang="ru" aria-pressed="false">
+          RU
+        </button>
+        <button type="button" id="lang-pl" class="lang-btn" data-lang="pl" aria-pressed="false">
+          PL
+        </button>
+      </div>
+    </section>
+
+    <section class="row" aria-label="Floating button">
+      <label class="toggle-label" for="show-floating">
+        <span class="label">Floating button on YouTube</span>
+      </label>
+      <button
+        type="button"
+        id="show-floating"
+        class="toggle"
+        role="switch"
+        aria-checked="true"
+        title="Show floating Summarize button on YouTube pages"
+      >
+        <span class="toggle-knob"></span>
+      </button>
+    </section>
+
+    <button type="button" id="summarize" class="primary">
+      Summarize in Gemini
+    </button>
+
+    <p id="status" class="status" role="status" hidden></p>
+
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
