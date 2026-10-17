@@ -17,7 +17,7 @@ Small Firefox extension for **local / personal use**. It adds a button that open
 2. Click **Load Temporary Add-on...**
 3. Select `manifest.json` from this repository
 
-Temporary add-ons are removed when Firefox restarts. Reload the extension from the same page after you pull changes.
+**Persistence:** a temporary add-on stays loaded until Firefox quits. After a full browser restart you must load `manifest.json` again. Normal tab reloads do not remove it. After you change extension files, click **Reload** on the same debugging page.
 
 ## Usage
 
