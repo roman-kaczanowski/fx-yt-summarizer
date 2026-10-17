@@ -31,6 +31,10 @@
   pointer-events: none;
 }
 
+#ytg-summarize-btn[hidden] {
+  display: none !important;
+}
+
 #ytg-summarize-btn .ytg-lang {
   opacity: 0.85;
   font-weight: 700;

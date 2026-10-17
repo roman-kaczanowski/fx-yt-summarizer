@@ -20,6 +20,24 @@
     );
   }
 
+  function isVideoFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      return true;
+    }
+    // YouTube marks the player (and sometimes <html>) when the video is fullscreen.
+    if (document.documentElement.classList.contains("ytp-fullscreen")) {
+      return true;
+    }
+    return Boolean(document.querySelector(".html5-video-player.ytp-fullscreen"));
+  }
+
+  function syncFullscreenVisibility() {
+    const btn = document.getElementById(BUTTON_ID);
+    if (btn) {
+      btn.hidden = isVideoFullscreen();
+    }
+  }
+
   async function getSettings() {
     const { summaryLang, showFloatingButton } = await browser.storage.local.get([
       "summaryLang",
@@ -80,19 +98,35 @@
 
     btn.innerHTML = `${labelFor(lang)} <span class="ytg-lang" title="Switch EN/RU/PL">${lang.toUpperCase()}</span>`;
     btn.title = titleFor(lang);
+    btn.hidden = isVideoFullscreen();
   }
 
   ensureButton();
 
-  // YouTube is an SPA — keep the button in sync with navigation.
+  document.addEventListener("fullscreenchange", syncFullscreenVisibility);
+  document.addEventListener("webkitfullscreenchange", syncFullscreenVisibility);
+
+  // YouTube is an SPA — keep the button in sync with navigation / player fullscreen class.
   let lastUrl = location.href;
+  let wasFullscreen = isVideoFullscreen();
   const observer = new MutationObserver(() => {
     if (location.href !== lastUrl) {
       lastUrl = location.href;
       ensureButton();
+      return;
+    }
+    const nowFullscreen = isVideoFullscreen();
+    if (nowFullscreen !== wasFullscreen) {
+      wasFullscreen = nowFullscreen;
+      syncFullscreenVisibility();
     }
   });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
+  observer.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class"],
+  });
 
   browser.storage.onChanged.addListener((changes, area) => {
     if (area === "local" && (changes.summaryLang || changes.showFloatingButton)) {
@@ -100,3 +134,4 @@
     }
   });
 })();
+
